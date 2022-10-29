@@ -1,3 +1,4 @@
+from cmath import pi
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -24,10 +25,11 @@ class Indicators:
         '''
         data = self.__data
         rsv = (
-                      data['Close'] - data['Close'].rolling(window=9).min()
-              ) / (
-                      data['Close'].rolling(window=9).max() - data['Close'].rolling(window=9).min()
-              ) * 100
+            data['Close'] - data['Close'].rolling(window=9).min()
+        ) / (
+            data['Close'].rolling(window=9).max() -
+            data['Close'].rolling(window=9).min()
+        ) * 100
         rsv = np.nan_to_num(rsv)
         self.__data['RSV'] = rsv
 
@@ -73,15 +75,15 @@ class Indicators:
         :return:
         '''
         data = self.__data
-        data['12_EMA'] = data['收盤價'].ewm(span=12).mean()
-        data['26_EMA'] = data['收盤價'].ewm(span=26).mean()
+        data['12_EMA'] = data['Close'].ewm(span=12).mean()
+        data['26_EMA'] = data['Close'].ewm(span=26).mean()
         data['DIF'] = data['12_EMA'] - data['26_EMA']
         data['MACD'] = data['DIF'].ewm(span=9).mean()
         data['MACD_histogram'] = data['DIF'] - data['MACD']
 
     def ma(self, day=20):
         data = self.__data
-        data['{}_MA'.format(day)] = data['收盤價'].rolling(day).mean()
+        data['{}_MA'.format(day)] = data['Close'].rolling(day).mean()
         data['{}_MA'.format(day)] = np.nan_to_num(data['{}_MA'.format(day)])
 
     def bias(self, day=6):
@@ -89,13 +91,14 @@ class Indicators:
         if '{}_MA'.format(day) not in data:
             self.ma(day)
 
-        data['Bias'] = 100 * (data['收盤價'] - data['{}_MA'.format(day)]) / data['收盤價'].rolling(day).mean()
+        data['Bias'] = 100 * (data['Close'] - data['{}_MA'.format(day)]
+                              ) / data['Close'].rolling(day).mean()
 
     def bollinger_band(self, day=20):
         data = self.__data
         if '{}_MA'.format(day) not in data:
             self.ma(day)
-        std = data['收盤價'].rolling(day).std()
+        std = data['Close'].rolling(day).std()
 
         data['Bollinger_top'] = data['{}_MA'.format(day)] + std * 2
         data['Bollinger_mid'] = data['{}_MA'.format(day)]
@@ -122,9 +125,10 @@ class Indicators:
         im = pyimgur.Imgur('7055605c8712cfc')
 
         if savefig == True:
-            picture = "../cache/KD.png"
+            picture = "src/cache/KD.png"
             plt.savefig(picture)
-            uploaded_image = im.upload_image(picture, title="Uploaded with PyImgur")
+            uploaded_image = im.upload_image(
+                picture, title="Uploaded with PyImgur")
 
             return uploaded_image.link
 
@@ -140,27 +144,25 @@ class Indicators:
         if 'DIF' not in data or 'MACD' not in data:
             self.macd()
 
-        data.index = pd.DatetimeIndex(data['日期'])
+        data.index = pd.DatetimeIndex(data['Date'])
         data = data[data.index > date]
 
         data['MACD'].plot(kind='line')
         data['DIF'].plot(kind='line')
         for index, row in data.iterrows():
             if (row['MACD_histogram'] > 0):
-                plt.bar(row['日期'], row['MACD_histogram'], width=0.5, color='red')
+                plt.bar(row['Date'], row['MACD_histogram'],
+                        width=0.5, color='red')
             else:
-                plt.bar(row['日期'], row['MACD_histogram'], width=0.5, color='green')
-
-        # major_index = data.index[data.index % 10 == 0]
-        # major_xtics = data['日期'][data.index % 10 == 0]
-        # plt.xticks(major_index, major_xtics)
-        # plt.setp(plt.gca().get_xticklabels(), rotation=30)
+                plt.bar(row['Date'], row['MACD_histogram'],
+                        width=0.5, color='green')
 
         plt.legend()
         plt.title('MACD')
 
         if savefig == True:
-            plt.savefig('picture/' + str(round(data['證券代號'].values[0])) + 'MACD.png')
+            picture = "src/cache/MACD.png"
+            plt.savefig(picture)
         else:
             plt.show()
 
@@ -170,14 +172,15 @@ class Indicators:
         if 'Bias' not in data:
             self.bias()
 
-        data.index = pd.DatetimeIndex(data['日期'])
+        data.index = pd.DatetimeIndex(data['Date'])
         data = data[data.index > date]
         data['Bias'].plot(color='red')
         plt.legend()
         plt.title('Bias')
 
         if savefig == True:
-            plt.savefig('picture/' + str(round(data['證券代號'].values[0])) + 'Bias.png')
+            picture = "src/cache/Bias.png"
+            plt.savefig(picture)
         else:
             plt.show()
 
@@ -187,18 +190,19 @@ class Indicators:
         if 'Bollinger_top' not in data or 'Bollinger_mid' not in data or 'Bollinger_down' not in data:
             self.bollinger_band()
 
-        data.index = pd.DatetimeIndex(data['日期'])
+        data.index = pd.DatetimeIndex(data['Date'])
         data = data[data.index > date]
 
         data['Bollinger_top'].plot(color='red')
         data['Bollinger_mid'].plot(color='blue')
         data['Bollinger_down'].plot(color='green')
-        data['收盤價'].plot(color='orange')
+        data['Close'].plot(color='orange')
         plt.legend()
         plt.title('Bollinger_band')
 
         if savefig == True:
-            plt.savefig('picture/' + str(round(data['證券代號'].values[0])) + 'Bollinger_band.png')
+            picture = "src/cache/Bollinger_band.png"
+            plt.savefig(picture)
         else:
             plt.show()
 
@@ -215,7 +219,10 @@ class Indicators:
             mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
                      savefig='picture/' + str(round(data['證券代號'].values[0])) + '.png')
         else:
-            mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240))
+            mpf.plot(data, style=s, type='candle',
+                     volume=True, mav=(5, 20, 60, 120, 240))
 
     def __str__(self):
         return self.__data.__str__()
+
+
