@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pyimgur
 import yfinance as yf
+from helper import data_loader
 
 CLIENT_ID = "Your_applications_client_id"
 PATH = "A Filepath to an image on your computer"
@@ -21,7 +22,7 @@ class Indicators:
 
     def rsv(self):
         '''
-        rsv = (今日收盤價 - 最近九天的最低價)/(最近九天的最高價 - 最近九天最低價)
+        rsv = [(today's Close) - (the last nine days's Low)] / [(the last nine days's High) - (the last nine days's Low)]
         '''
         data = self.__data
         rsv = (
@@ -35,7 +36,7 @@ class Indicators:
 
     def kv(self):
         '''
-        當日K值=前一日K值 * 2/3 + 當日RSV * 1/3
+        Today's K = (K the day before) * 2/3 + (today's RSV) * 1/3
         '''
         data = self.__data
         if 'RSV' not in data:
@@ -51,7 +52,7 @@ class Indicators:
 
     def dv(self):
         '''
-        當日D值=前一日D值 * 2/3 + 當日K值 * 1/3
+        Today's D = (D the day before) * 2/3 + (today's K) * 1/3
         '''
         data = self.__data
         if 'K' not in data:
@@ -67,12 +68,10 @@ class Indicators:
 
     def macd(self):
         '''
-        EMA(指數移動平均)：計算MACD時，會先計算長、短天期的指數移動平均線(EMA)
-        ，一般來說短期常使用12日(n=12)、長期為26日(m=26)
-        DIF = 12日EMA – 26日EMA
-        MACD =快線取9日EMA
-        柱狀圖(直方圖) = 快線–慢線，EMA快慢線相減後，得出來的差額就是在MACD圖形看到的柱狀圖。
-        :return:
+        EMA(n) = (EMA the day before(n) * (n-1) + today's Close * 2) ÷ (n+1)
+        EMA(m) = (EMA the day before(m) * (m-1) + today's Close * 2) ÷ (m+1)
+        DIF = EMA(n) - EMA(m)
+        MACD(x) = (MACD the day before * (x-1) + DIF * 2) ÷ (x+1)
         '''
         data = self.__data
         data['12_EMA'] = data['Close'].ewm(span=12).mean()
