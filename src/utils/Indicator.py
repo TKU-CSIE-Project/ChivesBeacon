@@ -103,7 +103,7 @@ class Indicators:
         data['Bollinger_mid'] = data['{}_MA'.format(day)]
         data['Bollinger_down'] = data['{}_MA'.format(day)] - std * 2
 
-    def kd_line(self, date: str, savefig: bool = True):
+    def kd_line(self, date: str):
         '''
         Make KD indicator's picture
         '''
@@ -123,18 +123,14 @@ class Indicators:
 
         im = pyimgur.Imgur('7055605c8712cfc')
 
-        if savefig == True:
-            picture = "src/cache/KD.png"
-            plt.savefig(picture)
-            uploaded_image = im.upload_image(
-                picture, title="Uploaded with PyImgur")
+        picture = "src/cache/KD.png"
+        plt.savefig(picture)
+        uploaded_image = im.upload_image(
+            picture, title="Uploaded with PyImgur")
 
-            return uploaded_image.link
+        return uploaded_image.link
 
-        else:
-            plt.show()
-
-    def macd_line(self, date: str, savefig: bool = True):
+    def macd_line(self, date: str):
         '''
         Make MACD indicator's picture
         '''
@@ -159,13 +155,10 @@ class Indicators:
         plt.legend()
         plt.title('MACD')
 
-        if savefig == True:
-            picture = "src/cache/MACD.png"
-            plt.savefig(picture)
-        else:
-            plt.show()
+        picture = "src/cache/MACD.png"
+        plt.savefig(picture)
 
-    def bias_line(self, date: str, savefig: bool = True):
+    def bias_line(self, date: str):
         data = self.__data
 
         if 'Bias' not in data:
@@ -177,13 +170,10 @@ class Indicators:
         plt.legend()
         plt.title('Bias')
 
-        if savefig == True:
-            picture = "src/cache/Bias.png"
-            plt.savefig(picture)
-        else:
-            plt.show()
+        picture = "src/cache/Bias.png"
+        plt.savefig(picture)
 
-    def bollinger_band_line(self, date: str, savefig: bool = True):
+    def bollinger_band_line(self, date: str):
         data = self.__data
 
         if 'Bollinger_top' not in data or 'Bollinger_mid' not in data or 'Bollinger_down' not in data:
@@ -199,13 +189,10 @@ class Indicators:
         plt.legend()
         plt.title('Bollinger_band')
 
-        if savefig == True:
-            picture = "src/cache/Bollinger_band.png"
-            plt.savefig(picture)
-        else:
-            plt.show()
+        picture = "src/cache/Bollinger_band.png"
+        plt.savefig(picture)
 
-    def candlestick_chart(self, date: str, savefig: bool = True):
+    def candlestick_chart(self, date: str):
         data = self.__data
 
         data.index = pd.DatetimeIndex(data['Date'])
@@ -213,15 +200,10 @@ class Indicators:
         mc = mpf.make_marketcolors(up='r', down='g', inherit=True)
         s = mpf.make_mpf_style(base_mpf_style='yahoo', marketcolors=mc)
 
-        if savefig == True:
-            # 5b,20o,60g,120r,240p
-            mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
-                     savefig='picture/' + str(round(data['證券代號'].values[0])) + '.png')
-        else:
-            mpf.plot(data, style=s, type='candle',
-                     volume=True, mav=(5, 20, 60, 120, 240))
+        picture = "src/cache/candlestick_chart.png"
+        # 5b,20o,60g,120r,240p
+        mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
+                 savefig=picture)
 
     def __str__(self):
         return self.__data.__str__()
-
-
