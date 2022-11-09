@@ -1,6 +1,7 @@
 aiohttp==3.8.1
 aiosignal==1.2.0
 aniso8601==9.0.1
+appdirs==1.4.4
 async-timeout==4.0.2
 attrs==22.1.0
 autopep8==1.7.0
@@ -16,19 +17,23 @@ fonttools==4.38.0
 frozenlist==1.3.1
 future==0.18.2
 idna==3.4
+importlib-metadata==5.0.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
 kiwisolver==1.4.4
 line-bot-sdk==2.3.0
+lxml==4.9.1
 MarkupSafe==2.1.1
 matplotlib==3.6.1
 mplfinance==0.12.9b1
 multidict==6.0.2
+multitasking==0.0.11
 numpy==1.23.4
 packaging==21.3
 pandas==1.5.1
 Pillow==9.2.0
 pycodestyle==2.9.1
+pyimgur==0.6.0
 pyparsing==3.0.9
 python-dateutil==2.8.2
 python-dotenv==0.21.0
@@ -41,3 +46,5 @@ typing_extensions==4.4.0
 urllib3==1.26.12
 Werkzeug==2.2.2
 yarl==1.8.1
+yfinance==0.1.84
+zipp==3.10.0
