@@ -11,8 +11,8 @@ def parse_command(user_msg_list: str) -> dict:
     return user_command
 
 
-def data_loader(symbol, start_date):
-    df = yf.Ticker(symbol).history(start=start_date)
+def data_loader(symbol, start_date, end_date=None):
+    df = yf.Ticker(symbol).history(start=start_date, end=end_date)
     df['Date'] = df.index
 
     return df
