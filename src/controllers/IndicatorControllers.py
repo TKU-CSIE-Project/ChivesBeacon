@@ -17,6 +17,3 @@ class IndicatorController:
         self.indicators.kd_line(date=self.start_date)
 
 
-if __name__ == '__main__':
-    IC = IndicatorController("2330.TW", "2022-10-02")
-    IC.KD()
