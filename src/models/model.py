@@ -49,5 +49,5 @@ class ANNNET(nn.Moudle):
         out = self.relu1(out)
         out = self.fc2(out)
         out = self.relu2(out)
-        out = self.relu3(out)
+        out = self.fc3(out)
         return out
