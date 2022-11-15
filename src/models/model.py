@@ -21,3 +21,33 @@ class LSTMNET(nn.Module):
         out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
         out = self.fc(out)
         return out
+
+
+class LinearRegression(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(LinearRegression, self).__init__()
+        self.linear = nn.Linear(input_size, output_size)
+
+    def forward(self, x):
+        return self.linear(x)
+
+
+class ANNNET(nn.Moudle):
+    def __init__(self, input_size, output_size):
+        super(ANNNET, self).__init__()
+
+        self.fc1 = nn.Linear(input_size, output_size)
+        self.relu1 = nn.ReLU()
+
+        self.fc2 = nn.Linear(input_size, output_size)
+        self.relu2 = nn.ReLU()
+
+        self.fc3 = nn.Linear(input_size, output_size)
+
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.relu1(out)
+        out = self.fc2(out)
+        out = self.relu2(out)
+        out = self.relu3(out)
+        return out
