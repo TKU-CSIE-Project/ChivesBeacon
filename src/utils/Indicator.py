@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pyimgur
-import yfinance as yf
 from helper import data_loader
 
 CLIENT_ID = "Your_applications_client_id"

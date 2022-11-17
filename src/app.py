@@ -3,7 +3,9 @@ from flask_restful import Resource, Api
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage)
-from dotenv import (load_dotenv, dotenv_values)
+from dotenv import (load_dotenv)
+from utils.helper import parse_command
+import os
 
 
 app = Flask(__name__)
@@ -11,7 +13,6 @@ load_dotenv()
 
 # API
 api = Api(app)
-config = dotenv_values('.env')
 Stock_list = []
 
 
@@ -27,8 +28,8 @@ class stock(Resource):
 
 
 # LINE BOT
-line_bot_api = LineBotApi(config['LINE_BOT_ACCESS_TOKEN'])
-handler = WebhookHandler(config['LINE_BOT_SECRET'])
+line_bot_api = LineBotApi(os.getenv('LINE_BOT_ACCESS_TOKEN'))
+handler = WebhookHandler(os.getenv('LINE_BOT_SECRET'))
 
 
 @app.route("/callback", methods=['POST'])
@@ -52,17 +53,17 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event)
-    if '!ma' in event.message.text:
-        stonkCode = event.message.text.split(' ').pop()
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=stonkCode))
-    else:
+    user_input = parse_command(event.message.text)
+    print(user_input)
+    if 'command' not in user_input:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='請輸入正確指令'))
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='輸入正確'))
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
