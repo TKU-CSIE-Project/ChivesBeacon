@@ -43,7 +43,7 @@ class Indicators:
             self.rsv()
         rsv = self.__data['RSV'].tolist()
 
-        kv = [20 for _ in range(8)]
+        kv = [50 for _ in range(8)]
         ktemp = kv[0]
         for i in range(len(rsv) - 8):
             ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)

@@ -1,6 +1,6 @@
 import sys
 sys.path.append('src/')
-from utils.Indicator import Indicators
+from utils.indicator import Indicators
 from utils.helper import data_loader
 
 
