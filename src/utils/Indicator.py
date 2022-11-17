@@ -6,7 +6,6 @@ import mplfinance as mpf
 import pyimgur
 
 
-
 CLIENT_ID = "Your_applications_client_id"
 PATH = "A Filepath to an image on your computer"
 
@@ -103,7 +102,7 @@ class Indicators:
         data['Bollinger_mid'] = data['{}_MA'.format(day)]
         data['Bollinger_down'] = data['{}_MA'.format(day)] - std * 2
 
-    def kd_line(self, date: str):
+    def kd_line(self, start_date: str):
         '''
         Make KD indicator's picture
         '''
@@ -115,7 +114,7 @@ class Indicators:
             self.dv()
 
         data.index = pd.DatetimeIndex(data['Date'])
-        data = data[data.index > date]
+        data = data[data.index > start_date]
         data['K'].plot()
         data['D'].plot()
         plt.legend()
@@ -130,7 +129,7 @@ class Indicators:
 
         return uploaded_image.link
 
-    def macd_line(self, date: str):
+    def macd_line(self, start_date: str):
         '''
         Make MACD indicator's picture
         '''
@@ -140,7 +139,7 @@ class Indicators:
             self.macd()
 
         data.index = pd.DatetimeIndex(data['Date'])
-        data = data[data.index > date]
+        data = data[data.index > start_date]
 
         data['MACD'].plot(kind='line')
         data['DIF'].plot(kind='line')
@@ -155,32 +154,44 @@ class Indicators:
         plt.legend()
         plt.title('MACD')
 
+        im = pyimgur.Imgur('7055605c8712cfc')
+
         picture = "src/cache/MACD.png"
         plt.savefig(picture)
+        uploaded_image = im.upload_image(
+            picture, title="Uploaded with PyImgur")
 
-    def bias_line(self, date: str):
+        return uploaded_image.link
+
+    def bias_line(self, start_date: str):
         data = self.__data
 
         if 'Bias' not in data:
             self.bias()
 
         data.index = pd.DatetimeIndex(data['Date'])
-        data = data[data.index > date]
+        data = data[data.index > start_date]
         data['Bias'].plot(color='red')
         plt.legend()
         plt.title('Bias')
 
-        picture = "src/cache/Bias.png"
-        plt.savefig(picture)
+        im = pyimgur.Imgur('7055605c8712cfc')
 
-    def bollinger_band_line(self, date: str):
+        picture = "src/cache/BIAS.png"
+        plt.savefig(picture)
+        uploaded_image = im.upload_image(
+            picture, title="Uploaded with PyImgur")
+
+        return uploaded_image.link
+
+    def bollinger_band_line(self, start_date: str):
         data = self.__data
 
         if 'Bollinger_top' not in data or 'Bollinger_mid' not in data or 'Bollinger_down' not in data:
             self.bollinger_band()
 
         data.index = pd.DatetimeIndex(data['Date'])
-        data = data[data.index > date]
+        data = data[data.index > start_date]
 
         data['Bollinger_top'].plot(color='red')
         data['Bollinger_mid'].plot(color='blue')
@@ -189,14 +200,20 @@ class Indicators:
         plt.legend()
         plt.title('Bollinger_band')
 
-        picture = "src/cache/Bollinger_band.png"
-        plt.savefig(picture)
+        im = pyimgur.Imgur('7055605c8712cfc')
 
-    def candlestick_chart(self, date: str):
+        picture = "src/cache/Bollinger_Band.png"
+        plt.savefig(picture)
+        uploaded_image = im.upload_image(
+            picture, title="Uploaded with PyImgur")
+
+        return uploaded_image.link
+
+    def candlestick_chart(self, start_date: str):
         data = self.__data
 
         data.index = pd.DatetimeIndex(data['Date'])
-        data = data[data.index > date]
+        data = data[data.index > start_date]
         mc = mpf.make_marketcolors(up='r', down='g', inherit=True)
         s = mpf.make_mpf_style(base_mpf_style='yahoo', marketcolors=mc)
 
@@ -204,6 +221,13 @@ class Indicators:
         # 5b,20o,60g,120r,240p
         mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
                  savefig=picture)
+
+        im = pyimgur.Imgur('7055605c8712cfc')
+
+        uploaded_image = im.upload_image(
+            picture, title="Uploaded with PyImgur")
+
+        return uploaded_image.link
 
     def __str__(self):
         return self.__data.__str__()
