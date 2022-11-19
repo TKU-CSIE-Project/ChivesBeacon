@@ -162,3 +162,4 @@ cython_debug/
 
 # Customize for project
 src/cache/**.png
+src/utils/company.csv
