@@ -4,7 +4,6 @@ import requests
 import time
 
 
-
 def parse_command(user_msg_list: str) -> dict:
     user_msg_list = user_msg_list.split(" ")
     user_command_key = ["symbol", "command", "start_date", "end_date"]
