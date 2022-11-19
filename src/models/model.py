@@ -32,7 +32,7 @@ class LinearRegression(nn.Module):
         return self.linear(x)
 
 
-class ANNNET(nn.Moudle):
+class ANNNET(nn.Module):
     def __init__(self, input_size, output_size):
         super(ANNNET, self).__init__()
 
