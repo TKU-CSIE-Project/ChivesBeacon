@@ -1,7 +1,7 @@
-from utils.helper import data_loader
-from utils.indicator import Indicators
 import sys
 sys.path.append('src/')
+from utils.helper import data_loader
+from utils.indicator import Indicators
 
 
 class IndicatorController:
