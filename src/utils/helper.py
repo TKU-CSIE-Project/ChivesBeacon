@@ -4,6 +4,7 @@ import requests
 import time
 
 
+
 def parse_command(user_msg_list: str) -> dict:
     user_msg_list = user_msg_list.split(" ")
     user_command_key = ["symbol", "command", "start_date", "end_date"]
@@ -41,15 +42,14 @@ def get_symbol() -> list:
 
 def all_company_data(start_date: str, end_date: str = None):
     symbol_list = get_symbol()
-    df = data_loader(get_symbol()[0]+".TW", start_date, end_date)
-    for i in range(len(symbol_list)-1):
+    df = data_loader(get_symbol()[0]+".TW", start_date)
+    for i in range(len(symbol_list)):
         try:
-            df1 = data_loader(symbol_list[i+1]+".TW", start_date, end_date)
+            df1 = data_loader(symbol_list[i+1]+".TW", start_date)
             df = pd.concat([df, df1])
         except:
-            print("Error: empty dataframe", symbol_list[i+1])
+            print("Error: empty dataframe", symbol_list[i])
     df.to_csv("src/utils/company.csv", index=False, encoding="utf_8_sig")
-
     return df
 
 
