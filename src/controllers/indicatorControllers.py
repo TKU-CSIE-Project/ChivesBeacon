@@ -13,16 +13,16 @@ class IndicatorController:
         self.end_date = end_date
 
     def kd_graph(self):
-        self.indicators.kd_line(start_date=self.start_date)
+        return self.indicators.kd_line(start_date=self.start_date)
 
     def macd_graph(self):
-        self.indicators.macd_line(start_date=self.start_date)
+        return self.indicators.macd_line(start_date=self.start_date)
 
     def bias_graph(self):
-        self.indicators.bias_line(start_date=self.start_date)
+        return self.indicators.bias_line(start_date=self.start_date)
 
     def bollinger_band_graph(self):
-        self.indicators.bollinger_band_line(start_date=self.start_date)
+        return self.indicators.bollinger_band_line(start_date=self.start_date)
 
     def candlestick_chart_graph(self):
-        self.indicators.candlestick_chart(start_date=self.start_date)
+        return self.indicators.candlestick_chart(start_date=self.start_date)

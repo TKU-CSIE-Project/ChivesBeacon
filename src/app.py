@@ -1,10 +1,14 @@
-from flask import (Flask, request, abort, jsonify)
-from flask_restful import Resource, Api
+from flask import (Flask, request, abort)
+from flask_restful import Api
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
-from linebot.models import (MessageEvent, TextMessage, TextSendMessage)
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage)
 from dotenv import (load_dotenv)
-from utils.helper import parse_command
+from utils.helper import (parse_command, compare_date)
+from controllers.indicatorControllers import IndicatorController
+from configs.config import COMMAND_LIST
+import datetime
 import os
 
 
@@ -13,18 +17,6 @@ load_dotenv()
 
 # API
 api = Api(app)
-Stock_list = []
-
-
-class stock(Resource):
-    def get(self, symbol):
-        for stock in Stock_list:
-            if stock['symbol'] == symbol:
-                return {''}
-
-    def post(self):
-        data = request.get_json()
-        return jsonify({data: data})
 
 
 # LINE BOT
@@ -54,15 +46,34 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_input = parse_command(event.message.text)
-    print(user_input)
-    if 'command' not in user_input:
+    symbol = user_input.get('symbol')
+    command = user_input.get('command').lower()
+    start_date = user_input.get('start_date')
+    end_date = user_input.get(
+        'end_date', datetime.date.today().strftime('%Y-%m-%d'))
+
+    if symbol == None:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='請輸入股票代號'))
+    elif command not in COMMAND_LIST:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='請輸入正確指令'))
-    else:
+    elif start_date == None:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='輸入正確'))
+            TextSendMessage(text='請輸入起始日期'))
+    elif compare_date(start_date, str(datetime.date.today())):
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='起始日不得小於今天日期'))
+    # TODO: create command condition after here
+    else:
+        kd_link = IndicatorController(symbol, start_date, end_date).kd_graph()
+        line_bot_api.reply_message(
+            event.reply_token,
+            ImageSendMessage(original_content_url=kd_link, preview_image_url=kd_link))
 
 
 if __name__ == "__main__":

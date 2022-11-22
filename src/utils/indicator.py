@@ -6,8 +6,7 @@ import mplfinance as mpf
 import pyimgur
 
 
-CLIENT_ID = "Your_applications_client_id"
-PATH = "A Filepath to an image on your computer"
+CLIENT_ID = "a8d43bdee9a335b"
 
 
 class Indicators:
@@ -120,13 +119,11 @@ class Indicators:
         plt.legend()
         plt.title('KD')
 
-        im = pyimgur.Imgur('7055605c8712cfc')
+        im = pyimgur.Imgur(CLIENT_ID)
 
         picture = "src/cache/KD.png"
         plt.savefig(picture)
-        uploaded_image = im.upload_image(
-            picture, title="Uploaded with PyImgur")
-
+        uploaded_image = im.upload_image(picture, title="")
         return uploaded_image.link
 
     def macd_line(self, start_date: str):
