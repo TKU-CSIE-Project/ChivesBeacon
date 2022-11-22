@@ -48,12 +48,11 @@ def callback():
 def handle_message(event):
     user_input = parse_command(event.message.text)
     symbol = user_input.get('symbol')
-    command = user_input.get('command', '').lower()
+    command = user_input.get('command').lower()
     start_date = user_input.get('start_date')
     end_date = user_input.get(
         'end_date', datetime.date.today().strftime('%Y-%m-%d'))
 
-    # User input validation
     if symbol == None:
         line_bot_api.reply_message(
             event.reply_token,

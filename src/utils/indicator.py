@@ -132,7 +132,6 @@ class Indicators:
 
         picture = "src/cache/KD.png"
         plt.savefig(picture)
-        plt.clf()
         uploaded_image = im.upload_image(picture, title="")
         return uploaded_image.link
 
