@@ -41,15 +41,16 @@ def get_symbol() -> list:
 
 
 def all_company_data(start_date: str, end_date: str = None):
-    symbol_list = get_symbol()
-    df = data_loader(get_symbol()[0]+".TW", start_date)
-    for i in range(len(symbol_list)):
+    symbol_list = get_symbol()[:10]
+    df = data_loader(get_symbol()[0]+".TW", start_date, end_date)
+    for i in range(len(symbol_list)-1):
         try:
-            df1 = data_loader(symbol_list[i+1]+".TW", start_date)
+            df1 = data_loader(symbol_list[i+1]+".TW", start_date, end_date)
             df = pd.concat([df, df1])
         except:
-            print("Error: empty dataframe", symbol_list[i])
+            print("Error: empty dataframe", symbol_list[i+1])
     df.to_csv("src/utils/company.csv", index=False, encoding="utf_8_sig")
+
     return df
 
 
