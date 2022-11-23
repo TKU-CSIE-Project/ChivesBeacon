@@ -132,6 +132,7 @@ class Indicators:
 
         picture = "src/cache/KD.png"
         plt.savefig(picture)
+        plt.clf()
         uploaded_image = im.upload_image(picture, title="")
         return uploaded_image.link
 
@@ -230,8 +231,8 @@ class Indicators:
         # 5b,20o,60g,120r,240p
         mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
                  savefig=picture)
-        plt.clf()
-        im = pyimgur.Imgur(CLIENT_ID)
+
+        im = pyimgur.Imgur('7055605c8712cfc')
 
         uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
