@@ -162,7 +162,3 @@ cython_debug/
 
 # Customize for project
 src/cache/**.png
-src/utils/company.csv
-src/utils/feature_company.csv
-
-src/models/train.py
