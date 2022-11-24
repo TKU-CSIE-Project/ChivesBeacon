@@ -6,7 +6,7 @@ def featuring_kd(data):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist[0:3])):
+    for i in range(len(symbollist)):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.kv()
@@ -21,7 +21,7 @@ def featuring_macd(data):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist[0:3])):
+    for i in range(len(symbollist)):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.macd()
@@ -36,7 +36,7 @@ def featuring_ma(data,day=20):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist[0:3])):
+    for i in range(len(symbollist)):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.ma(day)
@@ -50,7 +50,7 @@ def featuring_bias(data,day=6):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist[0:3])):
+    for i in range(len(symbollist)):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.bias(day)
@@ -64,7 +64,7 @@ def featuring_bollinger_band(data,day=20):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist[0:3])):
+    for i in range(len(symbollist)):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.bollinger_band(day)
