@@ -41,7 +41,7 @@ def get_symbol() -> list:
 
 
 def all_company_data(start_date: str, end_date: str = None):
-    symbol_list = get_symbol()[:10]
+    symbol_list = get_symbol()
     df = data_loader(get_symbol()[0]+".TW", start_date, end_date)
     for i in range(len(symbol_list)-1):
         try:
