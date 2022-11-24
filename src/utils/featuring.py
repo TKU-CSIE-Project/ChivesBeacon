@@ -21,7 +21,7 @@ def featuring_macd(data):
     symbollist = sorted(list(set(data.Symbol.values)))
     concat_df = pd.DataFrame()
 
-    for i in range(len(symbollist)):
+    for i in range(len(symbollist[0:3])):
         new_df = data[data['Symbol'] == symbollist[i]]
         ind_df = Indicators(new_df)
         ind_df.macd()
