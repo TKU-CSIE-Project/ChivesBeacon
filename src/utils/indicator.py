@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pyimgur
+pd.options.mode.chained_assignment = None
+
 
 
 CLIENT_ID = "a8d43bdee9a335b"
@@ -39,13 +41,14 @@ class Indicators:
         data = self.__data
         if 'RSV' not in data:
             self.rsv()
-        rsv = self.__data['RSV'].tolist()
+        rsv = np.array(self.__data['RSV'].tolist())
 
-        kv = [50 for _ in range(8)]
+        kv = np.array([50 for _ in range(8)])
         ktemp = kv[0]
         for i in range(len(rsv) - 8):
             ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)
-            kv.append(round(ktemp, 2))
+            kv = np.append(kv,round(ktemp, 2))
+
         self.__data['K'] = kv
 
     def dv(self):
@@ -55,13 +58,14 @@ class Indicators:
         data = self.__data
         if 'K' not in data:
             self.kv()
-        kv = self.__data['K'].tolist()
+        kv = np.array(self.__data['K'].tolist())
 
-        dv = [50 for _ in range(8)]
+        dv = np.array([50 for _ in range(8)])
         dtemp = dv[0]
         for i in range(len(kv) - 8):
             dtemp = dtemp * (2 / 3) + kv[i + 8] * (1 / 3)
-            dv.append(round(dtemp, 2))
+            dv = np.append(dv,round(dtemp, 2))
+            
         self.__data['D'] = dv
 
     def macd(self):
@@ -232,3 +236,4 @@ class Indicators:
 
     def __str__(self):
         return self.__data.__str__()
+

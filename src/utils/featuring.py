@@ -1,4 +1,6 @@
-from indicator import Indicators
+import sys
+sys.path.append('src/')
+from utils.indicator import Indicators
 import pandas as pd
 pd.options.mode.chained_assignment = None
 
