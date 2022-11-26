@@ -66,3 +66,17 @@ def featuring_bollinger_band(data,day=20):
         concat_df = pd.concat([concat_df,new_df])
 
     return concat_df
+
+def shift_data(data):
+    symbollist = sorted(list(set(data.Symbol.values)))
+    concat_df = pd.DataFrame()
+
+    for i in range(len(symbollist)):
+        new_df = data[data['Symbol'] == symbollist[i]]
+        new_df = new_df.shift(-20)
+        new_df = new_df.dropna()
+        concat_df = pd.concat([concat_df,new_df])
+        
+    concat_df.to_csv("src/utils/feature_company1.csv", index=False, encoding="utf_8_sig")
+
+    return concat_df
