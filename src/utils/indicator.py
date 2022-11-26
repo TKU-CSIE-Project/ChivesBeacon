@@ -4,12 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pyimgur
-from dotenv import (load_dotenv)
-import os
-pd.options.mode.chained_assignment = None
-
-
-load_dotenv()
 
 
 CLIENT_ID = os.getenv('PYIMGUR_CLIENT_ID')
@@ -52,8 +46,7 @@ class Indicators:
         ktemp = kv[0]
         for i in range(len(rsv) - 8):
             ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)
-            kv = np.append(kv, round(ktemp, 2))
-
+            kv.append(round(ktemp, 2))
         self.__data['K'] = kv
 
     def dv(self):
@@ -69,8 +62,7 @@ class Indicators:
         dtemp = dv[0]
         for i in range(len(kv) - 8):
             dtemp = dtemp * (2 / 3) + kv[i + 8] * (1 / 3)
-            dv = np.append(dv, round(dtemp, 2))
-
+            dv.append(round(dtemp, 2))
         self.__data['D'] = dv
 
     def macd(self):
@@ -241,3 +233,4 @@ class Indicators:
 
     def __str__(self):
         return self.__data.__str__()
+
