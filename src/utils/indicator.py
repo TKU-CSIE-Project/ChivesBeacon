@@ -13,6 +13,7 @@ load_dotenv()
 
 
 CLIENT_ID = os.getenv('PYIMGUR_CLIENT_ID')
+plt.switch_backend('agg')
 
 
 class Indicators:
