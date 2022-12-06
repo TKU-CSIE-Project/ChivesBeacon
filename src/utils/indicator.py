@@ -4,11 +4,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import pyimgur
+from dotenv import (load_dotenv)
+import os
 pd.options.mode.chained_assignment = None
 
 
+load_dotenv()
 
-CLIENT_ID = "a8d43bdee9a335b"
+
+CLIENT_ID = os.getenv('PYIMGUR_CLIENT_ID')
 
 
 class Indicators:
@@ -47,7 +51,7 @@ class Indicators:
         ktemp = kv[0]
         for i in range(len(rsv) - 8):
             ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)
-            kv = np.append(kv,round(ktemp, 2))
+            kv = np.append(kv, round(ktemp, 2))
 
         self.__data['K'] = kv
 
@@ -64,8 +68,8 @@ class Indicators:
         dtemp = dv[0]
         for i in range(len(kv) - 8):
             dtemp = dtemp * (2 / 3) + kv[i + 8] * (1 / 3)
-            dv = np.append(dv,round(dtemp, 2))
-            
+            dv = np.append(dv, round(dtemp, 2))
+
         self.__data['D'] = dv
 
     def macd(self):
@@ -156,7 +160,7 @@ class Indicators:
         plt.legend()
         plt.title('MACD')
 
-        im = pyimgur.Imgur('7055605c8712cfc')
+        im = pyimgur.Imgur(CLIENT_ID)
 
         picture = "src/cache/MACD.png"
         plt.savefig(picture)
@@ -178,7 +182,7 @@ class Indicators:
         plt.legend()
         plt.title('Bias')
 
-        im = pyimgur.Imgur('7055605c8712cfc')
+        im = pyimgur.Imgur(CLIENT_ID)
 
         picture = "src/cache/BIAS.png"
         plt.savefig(picture)
@@ -204,7 +208,7 @@ class Indicators:
         plt.legend()
         plt.title('Bollinger_band')
 
-        im = pyimgur.Imgur('7055605c8712cfc')
+        im = pyimgur.Imgur(CLIENT_ID)
 
         picture = "src/cache/Bollinger_Band.png"
         plt.savefig(picture)
@@ -227,7 +231,7 @@ class Indicators:
         mpf.plot(data, style=s, type='candle', volume=True, mav=(5, 20, 60, 120, 240),
                  savefig=picture)
         plt.clf()
-        im = pyimgur.Imgur('7055605c8712cfc')
+        im = pyimgur.Imgur(CLIENT_ID)
 
         uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
@@ -236,4 +240,3 @@ class Indicators:
 
     def __str__(self):
         return self.__data.__str__()
-
