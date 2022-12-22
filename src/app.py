@@ -8,6 +8,7 @@ from dotenv import (load_dotenv)
 from utils.helper import (parse_command, compare_date)
 from controllers.indicatorControllers import IndicatorController
 from configs.config import COMMAND_LIST
+from resources.Stock import Stock
 import datetime
 import os
 
@@ -17,7 +18,7 @@ load_dotenv()
 
 # API
 api = Api(app)
-
+api.add_resource(Stock, '/v1/stock')
 
 # LINE BOT
 line_bot_api = LineBotApi(os.getenv('LINE_BOT_ACCESS_TOKEN'))
