@@ -1,5 +1,6 @@
 from flask import (Flask, request, abort)
 from flask_restful import Api
+from flask_cors import CORS
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (
@@ -14,6 +15,7 @@ import os
 
 
 app = Flask(__name__)
+CORS(app)
 load_dotenv()
 
 # API
