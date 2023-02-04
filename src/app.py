@@ -72,38 +72,69 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='起始日不得小於今天日期'))
+
     # Command conditions
-    else:
-        if command == 'kd':
-            kd_link = IndicatorController(
-                symbol, start_date, end_date).kd_graph()
+    elif command == 'kd':
+        kd_link = IndicatorController(
+            symbol, start_date, end_date).kd_graph()
+        if kd_link == None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+        else:
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(original_content_url=kd_link, preview_image_url=kd_link))
-        elif command == 'macd':
-            macd_link = IndicatorController(
-                symbol, start_date, end_date).macd_graph()
+    elif command == 'macd':
+        macd_link = IndicatorController(
+            symbol, start_date, end_date).macd_graph()
+        if macd_link == None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+        else:
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(original_content_url=macd_link, preview_image_url=macd_link))
-        elif command == 'bias':
-            bias_link = IndicatorController(
-                symbol, start_date, end_date).bias_graph()
+    elif command == 'bias':
+        bias_link = IndicatorController(
+            symbol, start_date, end_date).bias_graph()
+        if bias_link == None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+        else:
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(original_content_url=bias_link, preview_image_url=bias_link))
-        elif command == 'bollinger':
-            bollinger_link = IndicatorController(
-                symbol, start_date, end_date).bollinger_band_graph()
+    elif command == 'bollinger':
+        bollinger_link = IndicatorController(
+            symbol, start_date, end_date).bollinger_band_graph()
+        if bollinger_link == None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+        else:
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(original_content_url=bollinger_link, preview_image_url=bollinger_link))
-        elif command == 'candle':
-            candle_link = IndicatorController(
-                symbol, start_date, end_date).candlestick_chart_graph()
+    elif command == 'candle':
+        candle_link = IndicatorController(
+            symbol, start_date, end_date).candlestick_chart_graph()
+        if candle_link == None:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+        else:
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(original_content_url=candle_link, preview_image_url=candle_link))
+
+    # Unexpected error
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='哎呀!可能有東西壞掉了QQ'))
 
 
 if __name__ == "__main__":
