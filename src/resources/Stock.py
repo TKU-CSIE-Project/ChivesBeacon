@@ -8,7 +8,6 @@ from controllers.indicatorControllers import IndicatorController
 import datetime
 
 
-
 class Stock(Resource):
     def post(self):
         data = request.get_json()
@@ -36,26 +35,46 @@ class Stock(Resource):
             if command == 'kd':
                 kd_link = IndicatorController(
                     symbol, start_date, end_date).kd_graph()
-                return {'message': 'Success Get KD', 'img_link': kd_link, 'status_code': 200}
+
+                if kd_link == None:
+                    return {'message': 'Empty Stock Data', 'status_code': 4024}
+                else:
+                    return {'message': 'Success Get KD', 'img_link': kd_link, 'status_code': 200}
 
             elif command == 'macd':
                 macd_link = IndicatorController(
                     symbol, start_date, end_date).macd_graph()
-                return {'message': 'Success Get MACD', 'img_link': macd_link, 'status_code': 200}
+
+                if macd_link == None:
+                    return {'message': 'Empty Stock Data', 'status_code': 4024}
+                else:
+                    return {'message': 'Success Get MACD', 'img_link': macd_link, 'status_code': 200}
 
             elif command == 'bias':
                 bias_link = IndicatorController(
                     symbol, start_date, end_date).bias_graph()
-                return {'message': 'Success Get BIAS', 'img_link': bias_link, 'status_code': 200}
+                    
+                if bias_link == None:
+                    return {'message': 'Empty Stock Data', 'status_code': 4024}
+                else:
+                    return {'message': 'Success Get BIAS', 'img_link': bias_link, 'status_code': 200}
 
             elif command == 'bollinger':
                 bollinger_link = IndicatorController(
                     symbol, start_date, end_date).bollinger_band_graph()
-                return {'message': 'Success Get Bollinger', 'img_link': bollinger_link, 'status_code': 200}
+
+                if bollinger_link == None:
+                    return {'message': 'Empty Stock Data', 'status_code': 4024}
+                else:
+                    return {'message': 'Success Get Bollinger', 'img_link': bollinger_link, 'status_code': 200}
 
             elif command == 'candle':
                 candle_link = IndicatorController(
                     symbol, start_date, end_date).candlestick_chart_graph()
-                return {'message': 'Success Get Candle', 'img_link': candle_link, 'status_code': 200}
+
+                if candle_link == None:
+                    return {'message': 'Empty Stock Data', 'status_code': 4024}
+                else:
+                    return {'message': 'Success Get Candle', 'img_link': candle_link, 'status_code': 200}
 
         return {'message': 'Something Error', 'status_code': 5020}
