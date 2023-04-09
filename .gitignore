@@ -164,5 +164,8 @@ cython_debug/
 src/cache/**.png
 src/utils/company.csv
 src/utils/feature_company.csv
+src/utils/feature_data.csv
+src/utils/X_test.csv
 
 src/models/train.py
+src/models/lstmtrain.py
