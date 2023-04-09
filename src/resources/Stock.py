@@ -35,6 +35,7 @@ class Stock(Resource):
             if command == 'kd':
                 kd_link = IndicatorController(
                     symbol, start_date, end_date).kd_graph()
+
                 if kd_link == None:
                     return {'message': 'Empty Stock Data', 'status_code': 4024}
                 else:
@@ -43,6 +44,7 @@ class Stock(Resource):
             elif command == 'macd':
                 macd_link = IndicatorController(
                     symbol, start_date, end_date).macd_graph()
+
                 if macd_link == None:
                     return {'message': 'Empty Stock Data', 'status_code': 4024}
                 else:
@@ -51,6 +53,7 @@ class Stock(Resource):
             elif command == 'bias':
                 bias_link = IndicatorController(
                     symbol, start_date, end_date).bias_graph()
+                    
                 if bias_link == None:
                     return {'message': 'Empty Stock Data', 'status_code': 4024}
                 else:
@@ -59,6 +62,7 @@ class Stock(Resource):
             elif command == 'bollinger':
                 bollinger_link = IndicatorController(
                     symbol, start_date, end_date).bollinger_band_graph()
+
                 if bollinger_link == None:
                     return {'message': 'Empty Stock Data', 'status_code': 4024}
                 else:
@@ -67,6 +71,7 @@ class Stock(Resource):
             elif command == 'candle':
                 candle_link = IndicatorController(
                     symbol, start_date, end_date).candlestick_chart_graph()
+
                 if candle_link == None:
                     return {'message': 'Empty Stock Data', 'status_code': 4024}
                 else:

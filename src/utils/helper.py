@@ -16,6 +16,9 @@ def parse_command(user_msg_list: str) -> dict:
 
 def data_loader(symbol: str, start_date: str, end_date=None):
     df = yf.Ticker(symbol).history(start=start_date, end=end_date)
+    df = df.drop(['Dividends', 'Stock Splits'], axis=1)
+    df['Symbol'] = symbol[:-3]
+    df['Date'] = df.index
     if df.empty == True:
         return df
     elif df.empty == False:
