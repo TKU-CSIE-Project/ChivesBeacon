@@ -8,7 +8,7 @@ sys.path.append('src/')
 
 def featuring_train(data):
     # string to datetime
-    data['Date'] = pd.to_datetime(data['Date'])
+    # data['Date'] = pd.to_datetime(data['Date'])
     data['Target'] = (data['Open']-data['Close'])/data['Open']
     data['Target'] = data['Target'].fillna(0)
 
@@ -41,7 +41,6 @@ def recommend(date: str):
     stock_prices = pd.read_csv('src/utils/company.csv')
     stock_prices = stock_prices.fillna(0)
     data = featuring_train(stock_prices)
-
     # split data
     data_test = data[data['Date'] > '2022-04-01']
     # reset index for test data
@@ -56,10 +55,13 @@ def recommend(date: str):
     loaded_model = joblib.load('src/models/LRmodel.learn')
     result = loaded_model.predict(X_test)
     stock_prices = stock_prices[stock_prices['Date'] > '2022-04-01']
+
     stock_prices['Predictions'] = result
 
-    stock_prices = stock_prices[stock_prices['Date'] == date]
+    stock_prices = stock_prices[stock_prices['Date'] == date+' 00:00:00+08:00']
+    print(stock_prices)
     stock_prices['Rank'] = stock_prices['Predictions'].rank(method='max')
     stock_prices = stock_prices.sort_values(by='Rank').head(10)
 
     return stock_prices.loc[:, ['Symbol', 'Rank']]
+

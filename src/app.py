@@ -5,10 +5,13 @@ from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage)
 from dotenv import (load_dotenv)
-from utils.helper import (parse_command, compare_date, validate_date)
+from utils.helper import (
+    parse_command, parse_recommend_command, compare_date, validate_date)
 from controllers.indicatorControllers import IndicatorController
+from controllers.recommendControllers import RecommendController
 from configs.config import COMMAND_LIST
 from resources.Stock import Stock
+from resources.Recommend import Recommend
 import datetime
 import os
 
@@ -19,6 +22,8 @@ load_dotenv()
 # API
 api = Api(app)
 api.add_resource(Stock, '/v1/stock')
+api.add_resource(Recommend, '/v1/recommend')
+
 
 # LINE BOT
 line_bot_api = LineBotApi(os.getenv('LINE_BOT_ACCESS_TOKEN'))
@@ -46,6 +51,34 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    user_input = parse_recommend_command(event.message.text)
+    command = user_input.get('command', '').lower()
+    start_date = user_input.get('start_date')
+    print(user_input, command, start_date)
+    # User input validation
+    if validate_date(start_date) != True:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='日期格式錯誤'))
+    elif compare_date(start_date, str(datetime.date.today())):
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='起始日不得大於今天日期'))
+    # For command
+    if command == 'recommend':
+        recommend_list = RecommendController(start_date).stock_recommend()
+        recommend_text = ''
+
+        for i in range(len(recommend_list)):
+            if (i == 9):
+                recommend_text += f"第{i+1}名: {recommend_list[i][0]}"
+            else:
+                recommend_text += f"第{i+1}名: {recommend_list[i][0]}\n"
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=recommend_text))
+
     user_input = parse_command(event.message.text)
     symbol = user_input.get('symbol')
     command = user_input.get('command', '').lower()
@@ -73,7 +106,7 @@ def handle_message(event):
     elif compare_date(start_date, str(datetime.date.today())):
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='起始日不得小於今天日期'))
+            TextSendMessage(text='起始日不得大於今天日期'))
 
     # Command conditions
     elif command == 'kd':

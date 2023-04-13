@@ -5,6 +5,16 @@ import time
 from dateutil.parser import parse
 
 
+def parse_recommend_command(user_msg_list: str) -> dict:
+    user_msg_list = user_msg_list.split(" ")
+    user_command_key = ["command", "start_date"]
+    # Dict comprehension
+    user_command = {user_command_key[i]: user_msg_list[i]
+                    for i in range(len(user_msg_list))}
+
+    return user_command
+
+
 def parse_command(user_msg_list: str) -> dict:
     user_msg_list = user_msg_list.split(" ")
     user_command_key = ["symbol", "command", "start_date", "end_date"]
