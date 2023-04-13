@@ -37,8 +37,8 @@ def featuring_train(data):
     return data
 
 
-def recommend(stock_prices:str,date:str):
-    stock_prices = pd.read_csv(stock_prices)
+def recommend(date: str):
+    stock_prices = pd.read_csv('src/utils/company.csv')
     stock_prices = stock_prices.fillna(0)
     data = featuring_train(stock_prices)
 
@@ -62,4 +62,4 @@ def recommend(stock_prices:str,date:str):
     stock_prices['Rank'] = stock_prices['Predictions'].rank(method='max')
     stock_prices = stock_prices.sort_values(by='Rank').head(10)
 
-    return stock_prices.loc[:,['Symbol','Rank']]
+    return stock_prices.loc[:, ['Symbol', 'Rank']]

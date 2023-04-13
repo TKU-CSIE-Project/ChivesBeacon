@@ -58,9 +58,9 @@ class Indicators:
         data = self.__data
         if 'RSV' not in data:
             self.rsv()
-        rsv = np.array(self.__data['RSV'].tolist())
+        rsv = self.__data['RSV'].tolist()
 
-        kv = np.array([50 for _ in range(8)])
+        kv = [50 for _ in range(8)]
         ktemp = kv[0]
         for i in range(len(rsv) - 8):
             ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)
@@ -73,9 +73,9 @@ class Indicators:
             data = self.__data
             if 'RSV' not in data:
                 self.rsv()
-            rsv = np.array(self.__data['RSV'].tolist())
+            rsv = self.__data['RSV'].tolist()
 
-            kv = np.array([50 for _ in range(8)])
+            kv = [50 for _ in range(8)]
             ktemp = kv[0]
             for i in range(len(rsv) - 8):
                 ktemp = ktemp * (2 / 3) + rsv[i + 8] * (1 / 3)
@@ -91,9 +91,9 @@ class Indicators:
         data = self.__data
         if 'K' not in data:
             self.kv()
-        kv = np.array(self.__data['K'].tolist())
+        kv = self.__data['K'].tolist()
 
-        dv = np.array([50 for _ in range(8)])
+        dv = [50 for _ in range(8)]
         dtemp = dv[0]
         for i in range(len(kv) - 8):
             dtemp = dtemp * (2 / 3) + kv[i + 8] * (1 / 3)
@@ -106,9 +106,9 @@ class Indicators:
             data = self.__data
             if 'K' not in data:
                 self.kv()
-            kv = np.array(self.__data['K'].tolist())
+            kv = self.__data['K'].tolist()
 
-            dv = np.array([50 for _ in range(8)])
+            dv = [50 for _ in range(8)]
             dtemp = dv[0]
             for i in range(len(kv) - 8):
                 dtemp = dtemp * (2 / 3) + kv[i + 8] * (1 / 3)
@@ -117,11 +117,13 @@ class Indicators:
             self.__data['D'] = dv
 
     def macd(self):
-        
+        '''
         EMA(n) = (EMA the day before(n) * (n-1) + today's Close * 2) ÷ (n+1)
         EMA(m) = (EMA the day before(m) * (m-1) + today's Close * 2) ÷ (m+1)
         DIF = EMA(n) - EMA(m)
         MACD(x) = (MACD the day before * (x-1) + DIF * 2) ÷ (x+1)
+        '''
+
         valid_status = self.valid_data()
         if (valid_status == None):
             return None
@@ -234,16 +236,16 @@ class Indicators:
         plt.savefig(picture)
         plt.clf()
         uploaded_image = im.upload_image(
+        picture, title="Uploaded with PyImgur")
+        im = pyimgur.Imgur(CLIENT_ID)
+
+        picture = "src/cache/MACD.png"
+        plt.savefig(picture)
+        plt.clf()
+        uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
-            im = pyimgur.Imgur(CLIENT_ID)
 
-            picture = "src/cache/MACD.png"
-            plt.savefig(picture)
-            plt.clf()
-            uploaded_image = im.upload_image(
-                picture, title="Uploaded with PyImgur")
-
-            return uploaded_image.link
+        return uploaded_image.link
 
     def bias_line(self, start_date: str):
         valid_status = self.valid_data()
@@ -267,16 +269,16 @@ class Indicators:
         plt.savefig(picture)
         plt.clf()
         uploaded_image = im.upload_image(
+        picture, title="Uploaded with PyImgur")
+        im = pyimgur.Imgur(CLIENT_ID)
+
+        picture = "src/cache/BIAS.png"
+        plt.savefig(picture)
+        plt.clf()
+        uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
-            im = pyimgur.Imgur(CLIENT_ID)
 
-            picture = "src/cache/BIAS.png"
-            plt.savefig(picture)
-            plt.clf()
-            uploaded_image = im.upload_image(
-                picture, title="Uploaded with PyImgur")
-
-            return uploaded_image.link
+        return uploaded_image.link
 
     def bollinger_band_line(self, start_date: str):
         valid_status = self.valid_data()
@@ -304,16 +306,16 @@ class Indicators:
         plt.savefig(picture)
         plt.clf()
         uploaded_image = im.upload_image(
+        picture, title="Uploaded with PyImgur")
+        im = pyimgur.Imgur(CLIENT_ID)
+
+        picture = "src/cache/Bollinger_Band.png"
+        plt.savefig(picture)
+        plt.clf()
+        uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
-            im = pyimgur.Imgur(CLIENT_ID)
 
-            picture = "src/cache/Bollinger_Band.png"
-            plt.savefig(picture)
-            plt.clf()
-            uploaded_image = im.upload_image(
-                picture, title="Uploaded with PyImgur")
-
-            return uploaded_image.link
+        return uploaded_image.link
 
     def candlestick_chart(self, start_date: str):
         valid_status = self.valid_data()
