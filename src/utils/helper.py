@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 import requests
 import time
+from dateutil.parser import parse
 
 
 def parse_command(user_msg_list: str) -> dict:
@@ -36,6 +37,15 @@ def compare_date(first_date, second_date):
     return (formatted_date1 > formatted_date2)
 
 
+def validate_date(date):
+    try:
+        parse(date, fuzzy=False)
+        return True
+
+    except ValueError:
+        return False
+
+
 def get_symbol() -> list:
     link = 'https://quality.data.gov.tw/dq_download_json.php?nid=11549&md5_url=bb878d47ffbe7b83bfc1b41d0b24946e'
     r = requests.get(link)
@@ -57,5 +67,3 @@ def all_company_data(start_date: str, end_date: str = None):
     df.to_csv("src/utils/company.csv", index=False, encoding="utf_8_sig")
 
     return df
-
-
