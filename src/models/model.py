@@ -5,49 +5,14 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 class LSTMNET(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, output_size=1):
+    def __init__(self, input_size, hidden_size, output_size=1, num_layers=1):
         super(LSTMNET, self).__init__()
-        self.num_layers = num_layers
-        self.hidden_size = hidden_size
-        self.lstm = nn.LSTM(input_size, hidden_size,
-                            num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, output_size)
-
+        self.rnn = nn.LSTM(input_size, hidden_size, num_layers)
+        self.reg = nn.Linear(30*hidden_size, output_size)
+        
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers, x.size(
-            0), self.hidden_size).requires_grad_()
-        c0 = torch.zeros(self.num_layers, x.size(
-            0), self.hidden_size).requires_grad_()
-        out, (hn, cn) = self.lstm(x, (h0.detach(), c0.detach()))
-        out = self.fc(out)
-        return out
-
-
-class LinearRegression(nn.Module):
-    def __init__(self, input_size, output_size):
-        super(LinearRegression, self).__init__()
-        self.linear = nn.Linear(input_size, output_size)
-
-    def forward(self, x):
-        return self.linear(x)
-
-
-class ANNNET(nn.Module):
-    def __init__(self, input_size, output_size):
-        super(ANNNET, self).__init__()
-
-        self.fc1 = nn.Linear(input_size, output_size)
-        self.relu1 = nn.ReLU()
-
-        self.fc2 = nn.Linear(input_size, output_size)
-        self.relu2 = nn.ReLU()
-
-        self.fc3 = nn.Linear(input_size, output_size)
-
-    def forward(self, x):
-        out = self.fc1(x)
-        out = self.relu1(out)
-        out = self.fc2(out)
-        out = self.relu2(out)
-        out = self.fc3(out)
+        r_out, (h_n, h_c) = self.rnn(x, None)   # None represents zero initial hidden state
+        r_out = r_out.reshape(r_out.shape[0], r_out.shape[1]*r_out.shape[2])
+        r_out = torch.sin(r_out)
+        out = self.reg(r_out)
         return out

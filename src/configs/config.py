@@ -1,1 +1,1 @@
-COMMAND_LIST = ['kd', 'macd', 'bias', 'bollinger', 'candle']
+COMMAND_LIST = ['kd', 'macd', 'bias', 'bollinger', 'candle', 'prediction']

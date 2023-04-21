@@ -6,6 +6,7 @@ import mplfinance as mpf
 import pyimgur
 from dotenv import (load_dotenv)
 import os
+import matplotlib
 pd.options.mode.chained_assignment = None
 
 
@@ -82,7 +83,6 @@ class Indicators:
                 kv = np.append(kv, round(ktemp, 2))
 
             self.__data['K'] = kv
-
 
     def dv(self):
         '''
@@ -236,13 +236,6 @@ class Indicators:
         plt.savefig(picture)
         plt.clf()
         uploaded_image = im.upload_image(
-        picture, title="Uploaded with PyImgur")
-        im = pyimgur.Imgur(CLIENT_ID)
-
-        picture = "src/cache/MACD.png"
-        plt.savefig(picture)
-        plt.clf()
-        uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
 
         return uploaded_image.link
@@ -263,13 +256,6 @@ class Indicators:
             plt.legend()
             plt.title('Bias')
 
-        im = pyimgur.Imgur(CLIENT_ID)
-
-        picture = "src/cache/BIAS.png"
-        plt.savefig(picture)
-        plt.clf()
-        uploaded_image = im.upload_image(
-        picture, title="Uploaded with PyImgur")
         im = pyimgur.Imgur(CLIENT_ID)
 
         picture = "src/cache/BIAS.png"
@@ -306,13 +292,6 @@ class Indicators:
         plt.savefig(picture)
         plt.clf()
         uploaded_image = im.upload_image(
-        picture, title="Uploaded with PyImgur")
-        im = pyimgur.Imgur(CLIENT_ID)
-
-        picture = "src/cache/Bollinger_Band.png"
-        plt.savefig(picture)
-        plt.clf()
-        uploaded_image = im.upload_image(
             picture, title="Uploaded with PyImgur")
 
         return uploaded_image.link
@@ -343,4 +322,3 @@ class Indicators:
 
     def __str__(self):
         return self.__data.__str__()
-
