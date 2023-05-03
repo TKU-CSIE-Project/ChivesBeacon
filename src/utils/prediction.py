@@ -1,7 +1,4 @@
-from utils.helper import data_loader
-from utils.featuring import featuring_kd
 import matplotlib
-from models.model import LSTMNET
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -11,6 +8,10 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import sys
 sys.path.append('src/')
+from utils.helper import data_loader
+from utils.featuring import featuring_kd
+from models.model import LSTMNET
+
 import os
 import pyimgur
 # matplotlib.use("TkAgg")
@@ -89,7 +90,7 @@ def prediction(symbol: str, start_date: str, end_date=None):
     x_test = torch.from_numpy(x_test)
     y_test = torch.from_numpy(y_test)
 
-    model = LSTMNET(7, 64, 1)
+    model = LSTMNET(7, 64, 2)
     model.load_state_dict(torch.load('src/models/lstm_params.pkl'))
     model.eval()
 

@@ -5,7 +5,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 class LSTMNET(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size=1, num_layers=1):
+    def __init__(self, input_size, hidden_size, output_size=2, num_layers=2):
         super(LSTMNET, self).__init__()
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers)
         self.reg = nn.Linear(30*hidden_size, output_size)
