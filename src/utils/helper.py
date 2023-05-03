@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 import requests
 import time
+from datetime import date
 from dateutil.parser import parse
 
 
@@ -45,6 +46,18 @@ def compare_date(first_date, second_date):
     formatted_date2 = time.strptime(second_date, "%Y-%m-%d")
 
     return (formatted_date1 > formatted_date2)
+
+
+def get_delta_day(date1, date2):
+    date1_list = date1.split('-')
+    date2_list = date2.split('-')
+    date1_date = date(int(date1_list[0]), int(
+        date1_list[1]), int(date1_list[2]))
+    date2_date = date(int(date2_list[0]), int(
+        date2_list[1]), int(date2_list[2]))
+    delta = date2_date - date1_date
+
+    return delta.days
 
 
 def validate_date(date):

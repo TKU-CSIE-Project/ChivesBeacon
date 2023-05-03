@@ -6,7 +6,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, ImageSendMessage)
 from dotenv import (load_dotenv)
 from utils.helper import (
-    parse_command, parse_recommend_command, compare_date, validate_date)
+    parse_command, parse_recommend_command, compare_date, get_delta_day, validate_date)
 from controllers.indicatorControllers import IndicatorController
 from controllers.predictionControllers import PredictionController
 from controllers.recommendControllers import RecommendController
@@ -190,18 +190,24 @@ def handle_message(event):
                     ImageSendMessage(original_content_url=candle_link, preview_image_url=candle_link))
 
         elif command == 'prediction':
-            prediction_link = PredictionController(
-                symbol, start_date, end_date).stock_predictions()
-
-            if prediction_link == None:
+            delta_day = get_delta_day(start_date, end_date)
+            if delta_day < 150:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
-
+                    TextSendMessage(text='日期需和今日相差150天，以提供足夠資料給AI'))
             else:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    ImageSendMessage(original_content_url=prediction_link, preview_image_url=prediction_link))
+                prediction_link = PredictionController(
+                    symbol, start_date, end_date).stock_predictions()
+
+                if prediction_link == None:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text='查無該股票資料，請重新輸入股票代碼'))
+
+                else:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        ImageSendMessage(original_content_url=prediction_link, preview_image_url=prediction_link))
 
         # Unexpected error
         else:
