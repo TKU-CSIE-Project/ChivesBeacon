@@ -34,6 +34,8 @@ def featuring_train(data):
 
     # drop unused data
     data = data.drop(['Symbol'], axis=1)
+    data = data.drop(['Dividends'], axis=1)
+    data = data.drop(['Stock Splits'], axis=1)
     return data
 
 
@@ -64,4 +66,3 @@ def recommend(date: str):
     stock_prices = stock_prices.sort_values(by='Rank').head(10)
 
     return stock_prices.loc[:, ['Symbol', 'Rank']]
-
